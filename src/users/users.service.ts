@@ -7,6 +7,6 @@ import { GenericService } from 'src/common/classes/Generic.service';
 @Injectable()
 export class UsersService extends GenericService<User, string> {
   constructor(@InjectRepository(User) private userRepo: Repository<User>) {
-    super(userRepo, 'user');
+    super(userRepo, 'user', 'User service', ['name', 'email']);
   }
 }

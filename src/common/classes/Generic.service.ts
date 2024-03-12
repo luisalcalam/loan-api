@@ -1,7 +1,10 @@
 import { InternalServerErrorException, Logger } from '@nestjs/common';
-import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
+import { DeepPartial, FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { HandleErrors } from './CustomError';
 import { User } from '../../users/entities/user.entity';
+import { FindAllResponse } from '../interfaces/find.interface';
+import { Pagination } from '../interfaces/pagination';
+import { PaginationDto } from '../dtos/pagination.dto';
 
 export abstract class GenericService<
   ENTITY extends Record<string, any>,
@@ -9,21 +12,48 @@ export abstract class GenericService<
 > {
   private readonly genericRepository: Repository<ENTITY>;
   private label: string;
+  private readonly textFields: string[];
   logger: Logger;
   constructor(
     genericRepository: Repository<ENTITY>,
     label = 'register',
     service = 'Generic service',
+    textFields: string[] = [],
   ) {
     this.genericRepository = genericRepository;
     this.label = label;
     this.logger = new Logger(service);
+    this.textFields = textFields;
   }
 
-  async findAll(): Promise<ENTITY[]> {
+  async findAll(
+    paginationDto: PaginationDto,
+  ): Promise<FindAllResponse<ENTITY[]>> {
     try {
-      const data = await this.genericRepository.find();
-      return data;
+      const skip = (paginationDto.currentPage - 1) * paginationDto.perPage;
+      const { perPage, currentPage } = paginationDto;
+      let where = {};
+      if (paginationDto.q && this.textFields.length > 0) {
+        where = this.textFields.map((field) => ({
+          [field]: ILike(`%${paginationDto.q}%`),
+        }));
+      }
+      const data = await this.genericRepository.findAndCount({
+        where,
+        skip,
+        take: perPage,
+      });
+      const totalPages = Math.ceil(data[1] / perPage);
+      const pagination: Pagination = {
+        perPage,
+        currentPage,
+        totalPages,
+        totalRows: data[1],
+      };
+      return {
+        content: data[0],
+        pagination,
+      };
     } catch (error) {
       HandleErrors.handleDBExceptions(error, this.logger);
     }
