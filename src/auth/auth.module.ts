@@ -9,12 +9,14 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
 import { RefreshJwtStrategy } from './strategies/refresh.strategy';
+import { SessionsModule } from 'src/sessions/sessions.module';
 
 @Module({
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, RefreshJwtStrategy],
   imports: [
-    UsersModule,
+    forwardRef(() => UsersModule),
+    forwardRef(() => SessionsModule),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       inject: [config.KEY],

@@ -4,12 +4,14 @@ import {
   Entity,
   BeforeInsert,
   BeforeUpdate,
+  OneToMany,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 
 import { UserRole } from '../../common/enums/userRoles';
 import { BasicEntity } from 'src/common/entities/basic.entity';
+import { Session } from 'src/sessions/entities/session.entity';
 @Entity({ name: 'users' })
 export class User extends BasicEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -37,6 +39,9 @@ export class User extends BasicEntity {
 
   @Column({ type: 'boolean', default: true })
   enabled: boolean;
+
+  @OneToMany(() => Session, (session) => session.user)
+  session: Session;
 
   @BeforeInsert()
   @BeforeUpdate()
