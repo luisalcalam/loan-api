@@ -32,7 +32,7 @@ export class User extends BasicEntity {
   role: UserRole;
 
   @Exclude()
-  @Column({ type: 'text', select: false })
+  @Column({ type: 'text' })
   password: string;
 
   @Column({ type: 'boolean', default: true })
