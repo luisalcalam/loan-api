@@ -15,7 +15,7 @@ import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { UserRole } from 'src/common/enums/userRoles';
 
-@Controller('loans')
+@Controller('aplications')
 export class LoansController {
   constructor(private readonly loansService: LoansService) {}
 

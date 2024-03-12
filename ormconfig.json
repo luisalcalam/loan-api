@@ -9,7 +9,7 @@
     "dist/**/*.entity.js"
   ],
   "migrations": [
-    "dist/db/migrations/*.js"
+    "dist/database/migrations/*.js"
   ],
   "migrationsRun": false,
   "seeds": [

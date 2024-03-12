@@ -8,11 +8,11 @@ import { LoanStatus } from '../../loans/enums/loanStatus.enum';
 
 export default class UserSeeder implements Seeder {
   public async run(dataSource: DataSource): Promise<any> {
-    // await dataSource.query('TRUNCATE "aplications" RESTART IDENTITY;');
-    await dataSource.query('TRUNCATE "users" RESTART IDENTITY;');
+    await dataSource.query('TRUNCATE "aplications" RESTART IDENTITY;');
+    await dataSource.query('TRUNCATE "users" CASCADE');
 
     const repository = dataSource.getRepository(User);
-    // const aplicationsRepository = dataSource.getRepository(Loan);
+    const aplicationsRepository = dataSource.getRepository(Loan);
     const userId = uuid();
     await repository.insert([
       {
@@ -31,13 +31,14 @@ export default class UserSeeder implements Seeder {
         role: UserRole.USER,
       },
     ]);
-    // await aplicationsRepository.insert([
-    //   {
-    //     amount: 1000,
-    //     term: 12,
-    //     interestRate: 0.1,
-    //     status: LoanStatus.ACTIVE,
-    //   },
-    // ]);
+    await aplicationsRepository.insert([
+      {
+        amount: 1000,
+        term: 12,
+        interestRate: 0.1,
+        startDate: new Date(),
+        status: LoanStatus.ACTIVE,
+      },
+    ]);
   }
 }
