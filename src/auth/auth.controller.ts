@@ -7,6 +7,7 @@ import { GetUser } from './decorators/get-user.decorator';
 import { Auth } from './decorators/auth.decorator';
 import { UsersService } from 'src/users/users.service';
 import { SignupDto } from './dto/signup.dto';
+import { UserRole } from 'src/common/enums/userRoles';
 
 @Controller('auth')
 export class AuthController {
@@ -33,7 +34,7 @@ export class AuthController {
   }
 
   @Get('login')
-  @Auth()
+  @Auth(UserRole.ADMIN)
   protected() {
     return 'ok';
   }
