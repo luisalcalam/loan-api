@@ -1,8 +1,17 @@
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import {
+  PrimaryGeneratedColumn,
+  Column,
+  Entity,
+  BeforeInsert,
+  BeforeUpdate,
+  OneToMany,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
+import * as bcrypt from 'bcrypt';
 
 import { UserRole } from '../../common/enums/userRoles';
 import { BasicEntity } from 'src/common/entities/basic.entity';
+import { Session } from 'src/sessions/entities/session.entity';
 @Entity({ name: 'users' })
 export class User extends BasicEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -30,4 +39,19 @@ export class User extends BasicEntity {
 
   @Column({ type: 'boolean', default: true })
   enabled: boolean;
+
+  @OneToMany(() => Session, (session) => session.user)
+  session: Session;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPasswordAndValidateEmail() {
+    if (this.email) {
+      this.email = this.email.toLowerCase().trim();
+    }
+    if (!this.password) {
+      return;
+    }
+    this.password = await bcrypt.hashSync(this.password, 10);
+  }
 }
