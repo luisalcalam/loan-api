@@ -106,4 +106,8 @@ export class AuthService {
 
     return user;
   }
+
+  logout(sessionId: string): Promise<boolean> {
+    return this.sessionsService.remove(sessionId);
+  }
 }

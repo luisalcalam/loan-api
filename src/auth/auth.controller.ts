@@ -49,6 +49,13 @@ export class AuthController {
     return this.authService.refreshToken(user);
   }
 
+  @Post('logout')
+  @HttpCode(200)
+  @Auth()
+  logout(@GetUser() user: UserSession) {
+    return this.authService.logout(user.sessionId);
+  }
+
   @Get('login')
   @Auth(UserRole.ADMIN)
   protected() {
