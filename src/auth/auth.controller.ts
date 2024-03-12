@@ -5,12 +5,14 @@ import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { GetUser } from './decorators/get-user.decorator';
 import { Auth } from './decorators/auth.decorator';
+import { UsersService } from 'src/users/users.service';
+import { SignupDto } from './dto/signup.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
-    // private usersService: UsersService,
+    private usersService: UsersService,
   ) {}
 
   @Post('login')
@@ -24,11 +26,11 @@ export class AuthController {
     return this.authService.login(loginUserDto);
   }
 
-  // @Post('signup')
-  // @HttpCode(200)
-  // signup(@Body() signupDto: SignupDto) {
-  //   return this.usersService.create(signupDto);
-  // }
+  @Post('register')
+  @HttpCode(200)
+  signup(@Body() signupDto: SignupDto) {
+    return this.usersService.create(signupDto);
+  }
 
   @Get('login')
   @Auth()
