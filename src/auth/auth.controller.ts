@@ -3,6 +3,8 @@ import { ApiResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
+import { GetUser } from './decorators/get-user.decorator';
+import { Auth } from './decorators/auth.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -28,10 +30,9 @@ export class AuthController {
   //   return this.usersService.create(signupDto);
   // }
 
-  // @Get('login')
-  // @Auth()
-  // protected(@GetUser() user: UserSession) {
-  //   console.log(user);
-  //   return 'ok';
-  // }
+  @Get('login')
+  @Auth()
+  protected() {
+    return 'ok';
+  }
 }
