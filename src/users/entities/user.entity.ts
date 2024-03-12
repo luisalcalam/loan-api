@@ -2,8 +2,9 @@ import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
 import { UserRole } from '../../common/enums/userRoles';
+import { BasicEntity } from 'src/common/entities/basic.entity';
 @Entity({ name: 'users' })
-export class User {
+export class User extends BasicEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
