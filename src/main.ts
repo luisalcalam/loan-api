@@ -6,10 +6,13 @@ import {
   ValidationPipe,
   VersioningType,
 } from '@nestjs/common';
+import generateTypeormConfigFile from './scripts/genarate-typeorm.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const logger = new Logger('Bootstrap');
+
+  generateTypeormConfigFile();
 
   app.useGlobalPipes(
     new ValidationPipe({

@@ -10,8 +10,8 @@ import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 
 import { UserRole } from '../../common/enums/userRoles';
-import { BasicEntity } from 'src/common/entities/basic.entity';
-import { Session } from 'src/sessions/entities/session.entity';
+import { BasicEntity } from '../../common/entities/basic.entity';
+import { Session } from '../../sessions/entities/session.entity';
 @Entity({ name: 'users' })
 export class User extends BasicEntity {
   @PrimaryGeneratedColumn('uuid')

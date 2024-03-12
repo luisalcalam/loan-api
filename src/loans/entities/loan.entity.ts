@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
 import { LoanStatus } from '../enums/loanStatus.enum';
 import { BasicEntity } from 'src/common/entities/basic.entity';
 
-@Entity()
+@Entity({ name: 'aplications' })
 export class Loan extends BasicEntity {
   @PrimaryGeneratedColumn('uuid')
   id: number;

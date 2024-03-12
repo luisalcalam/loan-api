@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigType } from '@nestjs/config';
 
 import config from '../config';
+import { join } from 'path';
 
 @Global()
 @Module({
@@ -17,8 +18,14 @@ import config from '../config';
           database: configService.postgres.dbName,
           username: configService.postgres.username,
           password: configService.postgres.password,
-          synchronize: true,
+          synchronize: false,
           autoLoadEntities: true,
+          migrationsRun: true,
+          migrations: [join(__dirname, '../migration/**/*{.ts,.js}')],
+          migrationsTableName: 'migrations_typeorm',
+          cli: {
+            migrationsDir: 'src/migration',
+          },
         };
       },
     }),

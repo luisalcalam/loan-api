@@ -24,7 +24,10 @@ export class Session {
   })
   expiresIn: Date;
 
-  @ManyToOne(() => User, (user) => user.session, { eager: true })
+  @ManyToOne(() => User, (user) => user.session, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   user: User;
 
   @CreateDateColumn({

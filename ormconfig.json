@@ -1,0 +1,21 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "root",
+  "database": "LoanDB",
+  "entities": [
+    "dist/**/*.entity.js"
+  ],
+  "migrations": [
+    "dist/db/migrations/*.js"
+  ],
+  "migrationsRun": false,
+  "seeds": [
+    "dist/database/seeds/**/*.js"
+  ],
+  "factories": [
+    "dist/database/factories/**/*.js"
+  ]
+}
